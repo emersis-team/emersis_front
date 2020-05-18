@@ -11,8 +11,8 @@ function getNovedades() {
     type: "GET",
     url: "https://emersis.casya.com.ar/api/v1/novedades",
     success: function (result) {
-      novedades = result.novedades;
-      novedades.data.forEach((novedad) => {
+      novedades = result.novedades.data;
+      novedades.forEach((novedad) => {
         var item =
           "<div>" +
           "<div class='card-header d-flex align-items-center justify-content-between'>" +
