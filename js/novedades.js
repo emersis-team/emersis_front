@@ -227,12 +227,12 @@ function verArchivosNovedad(id) {
           var item =
             "<div class='novedad-archivos-popup-row'>" +
             "<label>" +
-            file.descripcion +
+            file.description +
             "</label>" +
             '<a class="novedad-archivos-popup-a" href="https://emersis.casya.com.ar/public/storage/' +
             file.file +
             '" download="' +
-            file.descripcion +
+            file.description +
             '" >Descargar</a>' +
             "</div>";
           $("#novedad-archivos-popup").append(item);
