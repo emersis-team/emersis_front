@@ -1,5 +1,7 @@
 var novedades = [],
-  novedadElegida = null;
+  novedadElegida = null,
+  currPage = 1,
+  lastPage = null;
 
 $(document).ready(function () {
   getNovedades();
@@ -9,10 +11,19 @@ function getNovedades() {
   $("#novedades-container").empty();
   $.ajax({
     type: "GET",
-    url: "https://emersis.casya.com.ar/api/v1/novedades",
+    url: "https://emersis.casya.com.ar/api/v1/novedades?page=" + currPage,
     success: function (result) {
       novedades = result.novedades.data;
+      lastPage = result.novedades.last_page;
+      crearPaginacion();
       novedades.forEach((novedad) => {
+        var botonArchivos = "";
+        if (novedad.files.length > 0) {
+          botonArchivos =
+            '<button class="btn btn-info" style="margin-right: 10px;" onclick="verArchivosNovedad(' +
+            novedad.id +
+            ')">Archivos</button>';
+        }
         var item =
           "<div>" +
           "<div class='card-header d-flex align-items-center justify-content-between'>" +
@@ -20,9 +31,7 @@ function getNovedades() {
           novedad.titulo +
           "</h2>" +
           "<div>" +
-          '<button class="btn btn-info" style="margin-right: 10px;" onclick="verArchivosNovedad(' +
-          novedad.id +
-          ')">Archivos</button>' +
+          botonArchivos +
           '<button class="btn btn-primary" style="margin-right: 10px;" onclick="editarNovedad(' +
           novedad.id +
           ')">Editar</button>' +
@@ -48,6 +57,58 @@ function getNovedades() {
     error: function (result) {},
     contentType: "application/json",
   });
+}
+function crearPaginacion() {
+  var item =
+    '<li id="pagePrevious" class="page-item"><a class="page-link" href="#" onclick="previousPage()">Previous</a></li>';
+  $(".pagination").append(item);
+  for (var i = 1; i <= lastPage; i++) {
+    item =
+      '<li id="page' +
+      i +
+      '" class="page-item"><a class="page-link" href="#" onclick="getPage(' +
+      i +
+      ')">' +
+      i +
+      "</a></li>";
+    $(".pagination").append(item);
+  }
+  item =
+    '<li id="pageNext" class="page-item"><a class="page-link" href="#" onclick="nextPage()">Next</a></li>';
+  $(".pagination").append(item);
+}
+function previousPage() {
+  var list = document.getElementsByClassName("page-item");
+  for (let item of list) {
+    item.classList.remove("active");
+  }
+  document.getElementById("pagePrevious").classList.add("active");
+  currPage--;
+  if (currPage == 0) {
+    currPage = 1;
+  }
+  getNovedades();
+}
+function nextPage() {
+  var list = document.getElementsByClassName("page-item");
+  for (let item of list) {
+    item.classList.remove("active");
+  }
+  document.getElementById("pageNext").classList.add("active");
+  currPage++;
+  if (currPage > lastPage) {
+    currPage = lastPage;
+  }
+  getNovedades();
+}
+function getPage(page) {
+  var list = document.getElementsByClassName("page-item");
+  for (let item of list) {
+    item.classList.remove("active");
+  }
+  document.getElementById("page" + page).classList.add("active");
+  currPage = page;
+  getNovedades();
 }
 function abrirCrearNovedad() {
   agregarArchivo();
@@ -120,28 +181,28 @@ function guardarArchivos(id) {
   if (id == null && novedadElegida != null) {
     id = novedadElegida.id;
   }
-  var archivos = [];
-  var descripciones = [];
-  $(".novedad-archivo").each(function () {
-    if (this.files[0] != null) {
-      archivos.push(this.files[0]);
-      descripciones.push(this.files[0].name);
-    }
-  });
-  if (archivos.length > 0) {
-    var json = { file: archivos, description: descripciones };
 
+  var data = new FormData();
+  var count = 0;
+  $(".novedad-archivo").each(function (index) {
+    count++;
+    data.append("file[" + index + "]", this.files[0]);
+    data.append("description[" + index + "]", this.files[0].name);
+  });
+  if (count > 0) {
     $.ajax({
       type: "POST",
       url: "https://emersis.casya.com.ar/api/v1/novedades/" + id + "/files",
-      data: JSON.stringify(json),
-      contentType: "multipart/form-data",
-      success: function (result) {
+      data: data,
+      cache: false,
+      contentType: false,
+      processData: false,
+      done: function (result) {
         console.log(result);
         cerrarCrearNovedad();
         getNovedades();
       },
-      error: function (result) {
+      fail: function (result) {
         console.log(result);
       },
     });
