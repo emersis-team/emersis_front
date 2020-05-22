@@ -85,7 +85,7 @@ function previousPage() {
   for (let item of list) {
     item.classList.remove("active");
   }
-  document.getElementById("pagePrevious").classList.add("active");
+  document.getElementById("page" + currPage).classList.add("active");
   currPage--;
   if (currPage == 0) {
     currPage = 1;
@@ -97,7 +97,7 @@ function nextPage() {
   for (let item of list) {
     item.classList.remove("active");
   }
-  document.getElementById("pageNext").classList.add("active");
+  document.getElementById("page" + currPage).classList.add("active");
   currPage++;
   if (currPage > lastPage) {
     currPage = lastPage;
