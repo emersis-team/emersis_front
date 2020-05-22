@@ -79,29 +79,30 @@ function crearPaginacion() {
   item =
     '<li id="pageNext" class="page-item"><a class="page-link" href="#" onclick="nextPage()">Next</a></li>';
   $(".pagination").append(item);
+  document.getElementById("page" + currPage).classList.add("active");
 }
 function previousPage() {
-  var list = document.getElementsByClassName("page-item");
-  for (let item of list) {
-    item.classList.remove("active");
-  }
-  document.getElementById("page" + currPage).classList.add("active");
   currPage--;
   if (currPage == 0) {
     currPage = 1;
   }
-  getNovedades();
-}
-function nextPage() {
   var list = document.getElementsByClassName("page-item");
   for (let item of list) {
     item.classList.remove("active");
   }
   document.getElementById("page" + currPage).classList.add("active");
+  getNovedades();
+}
+function nextPage() {
   currPage++;
   if (currPage > lastPage) {
     currPage = lastPage;
   }
+  var list = document.getElementsByClassName("page-item");
+  for (let item of list) {
+    item.classList.remove("active");
+  }
+  document.getElementById("page" + currPage).classList.add("active");
   getNovedades();
 }
 function getPage(page) {
