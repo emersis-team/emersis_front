@@ -14,8 +14,10 @@ function getNovedades() {
     url: "https://emersis.casya.com.ar/api/v1/novedades?page=" + currPage,
     success: function (result) {
       novedades = result.novedades.data;
-      lastPage = result.novedades.last_page;
-      crearPaginacion();
+      if (lastPage == null) {
+        lastPage = result.novedades.last_page;
+        crearPaginacion();
+      }
       novedades.forEach((novedad) => {
         var botonArchivos = "";
         if (novedad.files.length > 0) {
