@@ -13,7 +13,7 @@ function getNovedades() {
     type: "GET",
     url: "https://emersis.casya.com.ar/api/v1/novedades?page=" + currPage,
     success: function (result) {
-      novedades = result.novedades;
+      novedades = result.novedades.data;
       lastPage = result.novedades.last_page;
       crearPaginacion();
       novedades.forEach((novedad) => {
@@ -59,6 +59,7 @@ function getNovedades() {
   });
 }
 function crearPaginacion() {
+  $(".pagination").empty();
   var item =
     '<li id="pagePrevious" class="page-item"><a class="page-link" href="#" onclick="previousPage()">Previous</a></li>';
   $(".pagination").append(item);
