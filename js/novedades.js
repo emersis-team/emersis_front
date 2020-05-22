@@ -59,6 +59,7 @@ function getNovedades() {
   });
 }
 function crearPaginacion() {
+  $(".pagination").empty();
   var item =
     '<li id="pagePrevious" class="page-item"><a class="page-link" href="#" onclick="previousPage()">Previous</a></li>';
   $(".pagination").append(item);
