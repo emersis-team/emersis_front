@@ -1,5 +1,3 @@
-var $token = null;
-
 function login() {
   var username = $("#login-username").val();
   var password = $("#login-password").val();
@@ -13,7 +11,7 @@ function login() {
       "&password=" +
       password,
     success: function (response) {
-      $token = response.token;
+      localStorage.setItem("$token", response.token);
       window.location.href = "/emersis_front";
     },
     error: function (result) {

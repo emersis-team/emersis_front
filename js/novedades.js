@@ -11,7 +11,7 @@ function getNovedades() {
   $("#novedades-container").empty();
   $.ajax({
     type: "GET",
-    headers: { Authorization: "Bearer " + $token },
+    headers: { Authorization: "Bearer " + localStorage.getItem("$token") },
     url: "https://emersis.casya.com.ar/api/v1/novedades?page=" + currPage,
     success: function (result) {
       novedades = result.novedades.data;
