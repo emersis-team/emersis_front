@@ -1,0 +1,43 @@
+﻿<html>
+  <head>
+    <title>Emersis - Login</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="./css/login.css?v=0" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div>
+        <img class="login-logo" src="./images/icon_emersis.png" />
+        <p class="login-error">Usuario y/o contraseña incorrectos</p>
+        <div class="login-body">
+          <div>
+            <label class="login-label"> Usuario</label>
+            <input
+              id="login-username"
+              class="login-input"
+              type="text"
+              name="username"
+            />
+          </div>
+          <div>
+            <label class="login-label"> Contraseña</label>
+            <input
+              id="login-password"
+              class="login-input"
+              type="password"
+              name="password"
+            />
+          </div>
+          <div>
+            <button class="login-btn" onclick="login()">Entrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/login.js"></script>
+  </body>
+</html>
