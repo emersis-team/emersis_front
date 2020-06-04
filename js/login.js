@@ -2,7 +2,7 @@ var $token = null;
 
 function login() {
   var username = $("#login-username").val();
-  var password = $("login-password").val();
+  var password = $("#login-password").val();
   $(".login-error").css("visibility", "hidden");
   $(".login-input").css("border", "none");
   $.ajax({
